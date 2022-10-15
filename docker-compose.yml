@@ -1,23 +1,21 @@
 version: "3.7"
 services:
   php:
-    container_name: php_kb
     build: './php/'
     networks:
-      - network_kb
+      - network_labo
     volumes:
       - ./src/:/var/www/html/
       - ./session/:/home/session/
       - ./php/uploads.ini:/usr/local/etc/php/conf.d/php-ini-overrides.ini
 
   apache:
-    container_name: apache_kb
     build: './apache/'
     depends_on:
       - php
       - db
     networks:
-      - network_kb
+      - network_labo
     ports:
       - "80:80"
       - "443:443"
@@ -25,7 +23,6 @@ services:
       - ./src/:/var/www/html/
 
   db:
-    container_name: mysql_kb
     image: mysql:5.7.26
     tty: true
     ports:
@@ -38,22 +35,21 @@ services:
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     networks:
-      - network_kb
+      - network_labo
     volumes:
       - ./mysql:/var/lib/mysql
 
   redis:
     image: "redis:alpine"
-    container_name: redis_kb
     ports:
       - "6379:6379"
     expose:
       - "6379"
     networks:
-      - network_kb
+      - network_labo
 
   phpmyadmin:
-    container_name: phpmyadm_kb
+    container_name: phpmyadm_labo
     image: phpmyadmin/phpmyadmin
     ports:
       - '8080:80'
@@ -66,10 +62,10 @@ services:
     depends_on:
       - db
     networks:
-      - network_kb
+      - network_labo
 
   npm:
-    container_name: npm_kb
+    container_name: npm_labo
     image: node:16.13
     volumes:
       - ./src:/var/www/html
@@ -79,7 +75,7 @@ services:
     working_dir: /var/www/html
     entrypoint: ['npm']
     networks:
-      - network_kb
+      - network_labo
 
 networks:
-  network_kb:
+  network_labo:
