@@ -5,6 +5,8 @@ services:
     build: './php/'
     networks:
       - network_kb
+    ports:
+      - "9000:9001"
     volumes:
       - ./src/:/var/www/html/
       - ./session/:/home/session/
